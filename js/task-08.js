@@ -16,5 +16,6 @@ function onFormSubmit(evt) {
     alert("Required to fill all the fields");
   } else {
     console.log(formData);
+    return loginFormEl.reset();
   }
 }
