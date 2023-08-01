@@ -4,47 +4,40 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
-const controlsEl = document.querySelector("#controls");
-const buttonsElements = controlsEl.children;
-const createBtnEl = buttonsElements[1];
-const destroyBtnEl = buttonsElements[2];
-const inputValueEl = controlsEl.firstElementChild;
+const createBtnEl = document.querySelector("button[data-create]");
+const destroyBtnEl = document.querySelector("button[data-destroy]");
+const inputValueEl = document.querySelector('input[type="number"');
 const emptyBoxEl = document.querySelector("#boxes");
 
-let increaseBoxesEl = 1;
-let margin = 0;
+createBtnEl.addEventListener("click", onCreateBtnClick);
+destroyBtnEl.addEventListener("click", destroyBoxes);
 
 // Create boxes
-inputValueEl.addEventListener("input", createOnInputValue);
-
-function createOnInputValue(evt) {
+function onCreateBtnClick() {
   let totalEl = inputValueEl.value;
-  if (totalEl >= 1 && totalEl < 100) {
-    createBtnEl.addEventListener("click", () => {
-      for (let i = 0; i < totalEl; i += 1) {
-        increaseBoxesEl += 0.1;
-        margin += 10;
-        const newBoxes = document.createElement("div");
-        newBoxes.style.width = "30px";
-        newBoxes.style.height = "30px";
-        newBoxes.style.backgroundColor = getRandomHexColor();
-        newBoxes.style.scale = increaseBoxesEl;
-        newBoxes.style.marginLeft = `${margin}px`;
-        emptyBoxEl.append(newBoxes);
-        console.log(emptyBoxEl.append(newBoxes));
-      }
-    });
-  } else {
-    createBtnEl.addEventListener("click", () => {
-      inputValueEl.innerHTML = "";
-    });
+
+  createBoxes(totalEl);
+}
+
+function createBoxes(amount) {
+  let boxSize = 30;
+
+  const boxes = [];
+  if (amount >= 1 && amount <= 100) {
+    for (let i = 0; i < amount; i += 1) {
+      const newBoxes = document.createElement("div");
+      newBoxes.style.width = `${boxSize}px`;
+      newBoxes.style.height = `${boxSize}px`;
+      newBoxes.style.backgroundColor = getRandomHexColor();
+      boxes.push(newBoxes);
+      boxSize += 10;
+    }
+    emptyBoxEl.append(...boxes);
   }
 }
 
-// Destroy all boxes
-destroyBtnEl.addEventListener("click", destroyBoxes);
-
+// Delete boxes
 function destroyBoxes(e) {
-  emptyBoxEl.remove();
+  emptyBoxEl.innerHTML = "";
   inputValueEl.value = "";
 }
